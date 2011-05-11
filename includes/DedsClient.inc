@@ -111,7 +111,6 @@ class DedsClient {
       if (time() < $cache->expire) {
         foreach ($data as $capability => $value) {
           if (!isset($cache->data->$capability)) {
-            d("Adding $capability => $value");
             $cache->data->$capability = $value;
           }
         }
