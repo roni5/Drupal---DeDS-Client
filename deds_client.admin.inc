@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * DeDS Client - Device Detection Service module for Drupal 6
  * Copyright (C) 2011 Catalyst IT
  *
@@ -18,6 +18,7 @@
  */
 
 /**
+ * @file
  * Form builder; Displays DeDS API administration settings
  * page.
  *
