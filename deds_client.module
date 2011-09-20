@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file
+ * The module file for the DeDs client.
+ *
+ * https://github.com/jkyamog/DeDS
+ * @author Ben Bradshaw - ben@catalyst.net.nz
+ */
+
 /*
  * DeDS Client - Device Detection Service module for Drupal 6
  * Copyright (C) 2011 Catalyst IT
@@ -18,12 +26,6 @@
  */
 
 /**
- * @file
- * https://github.com/jkyamog/DeDS
- * @author Ben Bradshaw - ben@catalyst.net.nz
- */
-
-/**
  * Implementation of hook_menu().
  */
 function deds_client_menu() {
@@ -40,8 +42,10 @@ function deds_client_menu() {
 }
 
 /**
- * Constructor for DeDS client
- * @return DedsClient instance or FALSE if configuration values are missing
+ * Constructor for DeDS client.
+ *
+ * @return
+ *   DedsClient instance or FALSE if configuration values are missing.
  */
 function deds_client_get_client() {
   $api_uri = variable_get('deds_client_api_uri', '');

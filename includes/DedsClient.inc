@@ -1,5 +1,13 @@
 <?php
 /**
+ * @file
+ * DeDS Client class file to query a web service running
+ * https://github.com/jkyamog/DeDS.
+ *
+ * @author Ben Bradshaw - ben@catalyst.net.nz
+ */
+
+/*
  * DeDS Client - Device Detection Service module for Drupal 6
  * Copyright (C) 2011 Catalyst IT
  *
@@ -18,13 +26,12 @@
  */
 
 /**
- * @file
- * DeDS Client to query a web service running https://github.com/jkyamog/DeDS
- * @author Ben Bradshaw - ben@catalyst.net.nz
+ * Represents a DeDS Client to query a web service.
  */
 class DedsClient {
   private $dds_uri = NULL;
-  private $cache_lifetime = NULL; // We'll use Drupal cache for the results
+  // We use Drupal cache for the results.
+  private $cache_lifetime = NULL;
 
   function __construct($dds_uri, $cache_lifetime) {
     $this->dds_uri = $dds_uri;
@@ -32,21 +39,25 @@ class DedsClient {
   }
 
   /**
-   * The only user-facing function - provide a user agent and an array of capabilities you want
-   * @param $user_agent - User Agent string of the device
-   * @param $capabilities - An array of values to be queried
+   * The only user-facing function - provide a user agent and an array of
+   * capabilities you want.
+   *
+   * @param string $user_agent
+   *   A string defining the User Agent of the device.
+   * @param array $capabilities
+   *   An array of values to be queried.
    */
   function query($user_agent, $capabilities) {
     $data = FALSE;
     $all_capabilities = NULL;
-    // Check cache - will only return data if it's not stale
+    // Check cache - will only return data if it's not stale.
     if ($cache_data = $this->_cache_get($user_agent)) {
 
-      // Sadly, we have to make sure all the values asked for are already cached
+      // Sadly, we have to make sure all the values asked for are already cached.
       $all_capabilities = TRUE;
       foreach ($capabilities as $key) {
         // Note: If you request a value DeDS can't return, then it will always not be found
-        // and will have to query each time
+        // and will have to query each time.
         if (!isset($cache_data->$key)) {
           $all_capabilities = FALSE;
           break;
@@ -57,24 +68,27 @@ class DedsClient {
         return $cache_data;
       }
       else {
-        // We could have _some_ of the info, but not all of it
-        // Do a DeDS query and add the result to the cache (using $all_capabilities as the flag)
+        // We could have _some_ of the info, but not all of it.
+        // Do a DeDS query and add the result to the cache
+        // (using $all_capabilities as the flag).
       }
 
     }
-    // Else, fall through to the DeDS query
+    // Else, fall through to the DeDS query.
     $http_code = $this->_deds_get($user_agent, $capabilities, $json_response);
 
     if ($http_code == 200) {
       $data = json_decode($json_response);
-      // Add to cache
+      // Add the data to the cache.
       if ($all_capabilities === NULL) {
         $this->_cache_set(&$user_agent, $data);
       }
       else {
-        $this->_cache_merge(&$user_agent, $data); // Add the new information to the existing cached record
+        // Add the new information to the existing cached record.
+        $this->_cache_merge(&$user_agent, $data);
       }
-      return $data; // Still, only return the data we asked for
+      // Still, only return the data we asked for.
+      return $data;
     }
     else {
       watchdog('deds_client', 'Error: DeDS returned with HTTP ' . $http_code);
@@ -85,11 +99,11 @@ class DedsClient {
   private function _deds_get($user_agent, $capabilities, &$json_response = NULL) {
     $request_url = $this->dds_uri . 'get_capabilities?';
 
-    // Encode the User Agent
+    // Encode the User Agent.
     $headers = array('User-Agent' => $user_agent);
     $request_url .= 'headers=' . urlencode(json_encode($headers));
 
-    // Request the capabilities we want
+    // Request the capabilities we want.
     foreach ($capabilities as $name) {
       $request_url .= '&capability=' . $name;
     }
@@ -118,24 +132,25 @@ class DedsClient {
           }
         }
       }
-      // Add back to the cache, but don't increment the expiry time, we don't want stale data piggybacking on fresh
+      // Add back to the cache, but don't increment the expiry time,
+      // we don't want stale data piggybacking on fresh.
       cache_set('deds_' . md5($user_agent), $cache->data, 'cache', $cache->expire);
     }
   }
 
   private function _cache_get($user_agent) {
-    // The cache key is dds_ followed by the md5 hash of the user agent
+    // The cache key is dds_ followed by the md5 hash of the user agent.
     if ($cache = cache_get('deds_' . md5($user_agent))) {
       // Is the data older than the lifetime?
       if (time() > $cache->expire) {
         return FALSE;
       }
-      // If we get a cache hit and the data is valid, return it
+      // If we get a cache hit and the data is valid, return it.
       else {
         return $cache->data;
       }
     }
-    // Cache miss, we need to query
+    // Cache miss, we need to query.
     else {
       return FALSE;
     }
