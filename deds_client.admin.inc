@@ -1,5 +1,12 @@
 <?php
 /**
+ * @file
+ * The administration settings for DeDS API.
+ *
+ * @author Ben Bradshaw - ben@catalyst.net.nz
+ */
+
+/*
  * DeDS Client - Device Detection Service module for Drupal 6
  * Copyright (C) 2011 Catalyst IT
  *
@@ -18,12 +25,9 @@
  */
 
 /**
- * @file
- * Form builder; Displays DeDS API administration settings
- * page.
+ * Form builder; Displays DeDS API administration settings page.
  *
  * @see system_settings_form()
- * @author Ben Bradshaw - ben@catalyst.net.nz
  */
 function deds_client_admin_settings() {
   $form = array();
@@ -51,6 +55,9 @@ function deds_client_admin_settings() {
   return system_settings_form($form);
 }
 
+/**
+ *  Form validation handler for deds_client_admin_settings().
+ */
 function deds_client_admin_settings_validate($form, &$form_state) {
   $uri = $form_state['values']['deds_client_api_uri'];
 

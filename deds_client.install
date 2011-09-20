@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Install file for deds_client module
+ * Install, update and uninstall functions for the deds_client module.
  */
 
 /**
