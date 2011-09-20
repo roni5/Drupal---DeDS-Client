@@ -51,3 +51,18 @@ function deds_client_admin_settings() {
   return system_settings_form($form);
 }
 
+function deds_client_admin_settings_validate($form, &$form_state) {
+  $uri = $form_state['values']['deds_client_api_uri'];
+
+  if (stripos($uri, 'http://') !== 0) {
+    form_set_error('deds_client_api_uri', t('DeDS URI must begin with http://'));
+  }
+  if (drupal_substr($uri, drupal_strlen($uri) - 1 ) !== '/') {
+    form_set_error('deds_client_api_uri', t('DeDS URI must end with /'));
+  }
+
+  if (!ctype_digit($form_state['values']['deds_client_cache_time'])) {
+    form_set_error('deds_client_cache_time', t('Cache time must be a positive integer value'));
+  }
+}
+
