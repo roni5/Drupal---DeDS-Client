@@ -39,8 +39,9 @@ function deds_client_menu() {
   return $items;
 }
 
-/*
+/**
  * Constructor for DeDS client
+ * @return DedsClient instance or FALSE if configuration values are missing
  */
 function deds_client_get_client() {
   $api_uri = variable_get('deds_client_api_uri', '');
@@ -48,12 +49,10 @@ function deds_client_get_client() {
 
   if (empty($api_uri)) {
     watchdog('deds_client', 'The DeDS API URI has not been configured. Please visit the configuration page.' . ' ' . l('Configure DeDS Module', '/admin/settings/deds-client'));
-    //drupal_set_message(t('Unable to connect to Sailthru, please check your settings'), 'error', false);
     return FALSE;
   }
   if (empty($cache_lifetime)) {
-    watchdog('deds_client', 'The Sailthru API Secret has not been configured. Please visit the configuration page.' . ' ' . l('Configure Sailthru Module', '/admin/settings/sailthru-client'));
-    //drupal_set_message(t('Unable to connect to Sailthru, please check your settings'), 'error', false);
+    watchdog('deds_client', 'The DeDS cache time has not been configured. Please visit the configuration page.' . ' ' . l('Configure DeDS Module', '/admin/settings/deds-client'));
     return FALSE;
   }
 
