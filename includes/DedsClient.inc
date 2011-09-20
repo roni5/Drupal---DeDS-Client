@@ -30,7 +30,7 @@ class DedsClient {
     $this->dds_uri = $dds_uri;
     $this->cache_lifetime = $cache_lifetime;
   }
-  
+
   /**
    * The only user-facing function - provide a user agent and an array of capabilities you want
    * @param $user_agent - User Agent string of the device
