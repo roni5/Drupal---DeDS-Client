@@ -1,0 +1,20 @@
+<?php
+/**
+ * @file
+ * Install file for deds_client module
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function deds_client_install() {
+  drupal_set_message(st('DeDS Client module has been installed. You will need to') . ' ' . l(st('configure'), '/admin/settings/deds-client') . ' ' . st('the client before you can use it.'));
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function deds_client_uninstall() {
+  variable_del('deds_client_api_uri');
+  variable_del('deds_client_cache_time');
+}
