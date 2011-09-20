@@ -1,4 +1,4 @@
-name = "Device Detection Service (DeDS) Client"
+name = Device Detection Service (DeDS) Client
 description = A wrapper and client for the DeDS web service. Provides an administration page for configuring which DeDS service to use and cache lifetime.
 core = 6.x
 php = 5.2

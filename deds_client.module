@@ -19,8 +19,7 @@
 
 /**
  * @file
- * A simple wrapper for the Sailthru API Client
- * https://github.com/sailthru/sailthru-php5-client
+ * https://github.com/jkyamog/DeDS
  * @author Ben Bradshaw - ben@catalyst.net.nz
  */
 
@@ -48,14 +47,14 @@ function deds_client_get_client() {
   $cache_lifetime = variable_get('deds_client_cache_time', '');
 
   if (empty($api_uri)) {
-    watchdog('deds_client', t('The DeDS API URI has not been configured. Please visit the configuration page.') . ' ' . l('Configure DeDS Module', '/admin/settings/deds-client'));
+    watchdog('deds_client', 'The DeDS API URI has not been configured. Please visit the configuration page.' . ' ' . l('Configure DeDS Module', '/admin/settings/deds-client'));
     //drupal_set_message(t('Unable to connect to Sailthru, please check your settings'), 'error', false);
-    return false;
+    return FALSE;
   }
   if (empty($cache_lifetime)) {
-    watchdog('deds_client', t('The Sailthru API Secret has not been configured. Please visit the configuration page.') . ' ' . l('Configure Sailthru Module', '/admin/settings/sailthru-client'));
+    watchdog('deds_client', 'The Sailthru API Secret has not been configured. Please visit the configuration page.' . ' ' . l('Configure Sailthru Module', '/admin/settings/sailthru-client'));
     //drupal_set_message(t('Unable to connect to Sailthru, please check your settings'), 'error', false);
-    return false;
+    return FALSE;
   }
 
   module_load_include('inc', 'deds_client', 'includes/DedsClient');
