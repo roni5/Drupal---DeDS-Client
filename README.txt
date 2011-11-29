@@ -6,6 +6,10 @@ This module is for developers who want to get up and running with Drupal and DeD
 
 The DeDS server is available on github: https://github.com/jkyamog/DeDS
 
+== Download ==
+
+This module is also available for download on Drupal.org: http://drupal.org/project/deds_client
+
 == Installing ==
 
 After enabling the module, visit /admin/settings/deds-client to configure your DeDS URL and cache lifetime. Your URL should end in the DeDS version, like http://{your DeDS URL}/dds/services/v1/
